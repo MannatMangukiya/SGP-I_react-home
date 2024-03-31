@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script>
+      // change navbar color
+$(document).ready(function(){
+  $(window).scrool(function(){
+      var scroll = $(window).scrollTop();
+      if(scroll>150){
+          $(".navbar").css("background","#222");
+          $(".navbar").css("box-shadow","rgba(0,0,0,0.1) 0px 4px 12px");
+      }
+      else{
+          $(".navbar").css("background","transparent");
+          $(".navbar").css("box-shadow","none");
+      }
+  })
+});
+
+//job data
+const jobs = [
+  {
+      title: "Software Engineer",
+      company: "TechCo",
+      location: "New York, NY",
+      description: "We are looking for a skilled software engineer...",
+  },
+  {
+      title: "Data Analyst",
+      company: "DataCorp",
+      location: "San Francisco, CA",
+      description: "DataCorp is hiring a data analyst to join our team...",
+  },
+];
+//search jobs
+function searchJobs() {
+  const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+  const jobList = document.getElementById("jobList");
+  jobList.innerHTML = '';
+
+  jobs.forEach((job, index) => {
+      if (job.title.toLowerCase().includes(searchTerm) || job.company.toLowerCase().includes(searchTerm)) {
+          const jobCard = document.createElement("div");
+          jobCard.className = "job-card";
+          jobCard.innerHTML = `
+              <h3>${job.title} - ${job.company}</h3>
+              <p><strong>Location:</strong> ${job.location}</p>
+              <p><strong>Description:</strong> ${job.description}</p>
+          `;
+          jobList.appendChild(jobCard);
+      }
+  });
+}
+
+// smooth scroll
+var navbarHeight = $(".navbar").outerHeight();
+$(".navbar-menu a").click(function(e){
+  var targetHref = $(this).attr("href");
+  $("html,body").animate({
+      scrollTop: $(targetHref).offset().top - navbarHeight
+  },1000)
+  e.preventDefault();
+});
+
+//navbara mobile version
+const mobile = document.querySelector(".menu-toggle");
+const mobileLink = document.querySelector(".navbar-menu");
+
+mobile.addEventListener("click", function(){
+  mobile.classList.toggle("is-active");
+  mobileLink.classList.toggle("active");
+})
+
+mobileLink.addEventListener("click",function(){
+  const menuBars = document.querySelector(".is-active");
+  if(window.innerWidth <=768 && menuBars ){
+      mobile.classList.toggle("is-active");
+      mobileLink.classList.remove("active");
+
+  }
+})
+
+// swiper
+var swiper = new Swiper(".mySwiper",
+{
+  loop: true,
+  autoplay: {
+      delay: 2500,
+      disableOnInteraction: false,
+  },
+  slidesPreview:1,
+  spaceBetween:10,
+  pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+  },
+  breakpoints:{
+      640:{
+          slidesPerView: 2,
+          spaceBetween:20,
+      },
+      768:{
+          slidesPerView: 3,
+          spaceBetween:40,
+      },
+      1024:{
+          slidesPerView: 4,
+          spaceBetween:40,
+      }
+      }
+
+      })
+    </script>
+  </body>
+</html>
